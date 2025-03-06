@@ -3,34 +3,17 @@ import time
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # 🔹 Вставь свои данные (API ID, API Hash, Bot Token)
-api_id = 27027282  # Твой API ID
-api_hash = "47951cc6fa58dd6ac0f228841b6f289f"  # Твой API Hash
-bot_token = "8064465221:AAF-FNEFO--bgNldMoiIjShDgKV9o6ajsP4"  # Твой Bot Token
+import os
+
+api_id = int(os.getenv("API_ID"))  # Читаем API ID из переменных окружения
+api_hash = os.getenv("API_HASH")  # Читаем API Hash из переменных окружения
+bot_token = os.getenv("BOT_TOKEN")  # Читаем Bot Token из переменных окружения
 
 # 🔹 Создаём бота
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
-# 🔹 Обработчик команды /start
-@app.on_message(filters.command("start"))
-def start_message(client, message):
-    message.reply_text(
-        "Привет! Я помогу тебе развить мышление и восприятие. 🚀\n\n"
-        "Напиши /help, чтобы узнать больше."
-    )
-
-# 🔹 Запуск бота
-app.run()
-from pyrogram import Client, filters
-import time
-from apscheduler.schedulers.background import BackgroundScheduler
-
-# 🔹 Вставь свои данные (API ID, API Hash, Bot Token)
-api_id = 27027282  # Твой API ID
-api_hash = "47951cc6fa58dd6ac0f228841b6f289f"  # Твой API Hash
-bot_token = "8064465221:AAF-FNEFO--bgNldMoiIjShDgKV9o6ajsP4"  # Твой Bot Token
-
-# 🔹 Создаём бота
-app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+# 🔹 Хранение подписчиков (простой вариант в памяти)
+subscribers = set()
 
 # 🔹 Обработчик команды /start
 @app.on_message(filters.command("start"))
@@ -50,9 +33,6 @@ def help_message(client, message):
         "/subscribe - Подписаться на инсайты 📩\n"
         "/unsubscribe - Отписаться от рассылки"
     )
-
-# 🔹 Хранение подписчиков
-subscribers = set()
 
 # 🔹 Команда /subscribe (подписка на рассылку)
 @app.on_message(filters.command("subscribe"))
@@ -85,29 +65,6 @@ def send_daily_insight():
 scheduler = BackgroundScheduler()
 scheduler.add_job(send_daily_insight, "interval", hours=24)  # Авторассылка каждые 24 часа
 scheduler.start()
-
-# 🔹 Запуск бота
-app.run()
-
-from pyrogram import Client, filters
-import time
-from apscheduler.schedulers.background import BackgroundScheduler
-
-# 🔹 Вставь свои данные (API ID, API Hash, Bot Token)
-api_id = 27027282  # Твой API ID
-api_hash = "47951cc6fa58dd6ac0f228841b6f289f"  # Твой API Hash
-bot_token = "8064465221:AAF-FNEFO--bgNldMoiIjShDgKV9o6ajsP4"  # Твой Bot Token
-
-# 🔹 Создаём бота
-app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
-
-# 🔹 Обработчик команды /start
-@app.on_message(filters.command("start"))
-def start_message(client, message):
-    message.reply_text(
-        "Привет! Я помогу тебе развить мышление и восприятие. 🚀\n\n"
-        "Напиши /help, чтобы узнать больше."
-    )
 
 # 🔹 Запуск бота
 app.run()
